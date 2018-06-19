@@ -2,10 +2,9 @@ class Incident < ActiveRecord::Base
   belongs_to :reason
   belongs_to :location
 
-
-
   def self.average_age
-    self.where("age > 0").average(:age).round
+    age = self.where("age > 0").average(:age).round
+    "Average age for persons of stop and frisk incidents is: #{age}"
   end
 
 
@@ -25,32 +24,23 @@ class Incident < ActiveRecord::Base
   def self.most_common_hour
     hour_frequencies = self.get_incident_hour_freq
     hour_frequencies.key(hour_frequencies.values.max).to_s.to_i
-    # .max_by{|k, v| v} => [:"11" , 18]
-    # .key(hour_frequencies.values.max).to_s.to_i => 11
   end
-
 
   def self.get_sorted(key)
-    if self.column_names.include?(key)
-     self.group(key).count.sort_by{|k,v| v}.reverse
-   else
-     "Key does not exist!"
-   end
+   self.group(key).count.sort_by{|k,v| v}.reverse
   end
 
-
   def self.most_common(attribute)
-      self.get_sorted(attribute)
+      self.get_sorted(attribute).first
   end
 
   def self.least_common(attribute)
       self.get_sorted(attribute).last
   end
 
-
-
-  def self.most_common_reason_for_sex(sex)
-    self.where("sex = ?", sex).group(:reason).count.sort_by{|k,v| v}.reverse
+  def self.sort_reasons_by_gender(sex)
+    arr = self.where("sex = ?", sex).group(:reason).count.sort_by{|k,v| v}.reverse
+    arr.collect {|arr| "#{arr[0].description} with #{arr[1]} incidents"}
   end
 
 end
