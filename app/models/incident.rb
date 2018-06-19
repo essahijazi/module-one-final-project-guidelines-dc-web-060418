@@ -31,12 +31,16 @@ class Incident < ActiveRecord::Base
 
 
   def self.get_sorted(key)
+    if self.column_names.include?(key)
      self.group(key).count.sort_by{|k,v| v}.reverse
+   else
+     "Key does not exist!"
+   end
   end
 
 
   def self.most_common(attribute)
-      self.get_sorted(attribute).first
+      self.get_sorted(attribute)
   end
 
   def self.least_common(attribute)
