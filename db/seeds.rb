@@ -49,11 +49,21 @@ end
 stops_2013 = GetIncidents.new.stops_by_year(2013)
 analyze = Analysis.new(stops_2013)
 
-#SEED INCIDENTS, LOCATIONS & REASONS TABLE
+#SEED LOCATIONS
+i = 1
+while i < 8
+    distr = i.to_s+"D"
+    Location.find_or_create_by(district: distr)
+    i += 1
+end
+Location.find_or_create_by(district: nil)
+
+#SEED INCIDENTS & REASONS TABLE
 analyze.data.each do |incident|
-    location = Location.find_or_create_by(district: incident["DISTRICT"])
+    #Grab the right location object/row for this incident
+    location = Location.find_by(district: incident["DISTRICT"])
+    #grab or create the right reason object/row for this incident
     reason = Reason.find_or_create_by(description: incident["REASON_FOR_STOP"])
-    #binding.pry
     Incident.create(
         location: location, 
         reason: reason, 
@@ -65,7 +75,7 @@ analyze.data.each do |incident|
 
     end
 
-    #OLD SEED DATA IN CASE EVERYTHING BREAKS
+#OLD SEED DATA IN CASE EVERYTHING BREAKS
 # location1 = Location.find_or_create_by(district: "1D")
 # location2 = Location.find_or_create_by(district: "2D")
 # location3 = Location.find_or_create_by(district: "3D")
