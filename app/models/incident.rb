@@ -30,4 +30,23 @@ class Incident < ActiveRecord::Base
   end
 
 
+  def self.get_sorted(key)
+     self.group(key).count.sort_by{|k,v| v}.reverse
+  end
+
+
+  def self.most_common(attribute)
+      self.get_sorted(attribute).first
+  end
+
+  def self.least_common(attribute)
+      self.get_sorted(attribute).last
+  end
+
+
+
+  def self.most_common_reason_for_sex(sex)
+    self.where("sex = ?", sex).group(:reason).count.sort_by{|k,v| v}.reverse
+  end
+
 end
