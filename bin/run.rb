@@ -18,17 +18,24 @@ require_relative '../config/environment.rb'
     puts ""
   end
 
-
-  def get_attributes(value)
+  def display_demographic_options(most_or_least)
     puts ""
-    puts Rainbow("Please specify, if you want to search #{value} common incidents by SEX, AGE, ETHNICITY or RACE").blue
+    puts Rainbow("Please specify, if you want to search #{most_or_least} common incidents by SEX, AGE, ETHNICITY or RACE").blue
+  end
+
+  def display_selected_demographic_option(most_or_least)
     second_user_input = gets.chomp
     if Incident.column_names.include?(second_user_input)
-      if value == "most"
-        puts Incident.most_common(second_user_input)
-      elsif value == "least"
-        puts Incident.least_common(second_user_input)
+      if (second_user_input != "age")
+        puts Incident.parsed_mostleast_common_age_for_all_incidents(most_or_least)
+      else
+
       end
+      # if most_or_least == "most"
+      #   puts Incident.most_common(second_user_input)
+      # elsif most_or_least == "least"
+      #   puts Incident.least_common(second_user_input)
+      # end
     else
       puts Rainbow("Sorry, that's not a column in our table.").blue
     end
@@ -66,11 +73,13 @@ require_relative '../config/environment.rb'
       when 1
         puts Incident.average_age
       when 2
-        puts Incident.most_common_hour
+        puts Incident.parsed_most_common_hour
       when 3
-        get_attributes("most")
+        display_demographic_options("most")
+        display_selected_demographic_option("most")
       when 4
-        get_attributes("least")
+        display_demographic_options("least")
+        display_selected_demographic_option("least")
       when 5
         get_gender
       when 6

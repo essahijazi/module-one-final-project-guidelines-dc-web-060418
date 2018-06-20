@@ -17,6 +17,11 @@ class Incident < ActiveRecord::Base
     hour_frequencies.key(hour_frequencies.values.max)
   end
 
+  def self.parsed_most_common_hour
+    hour = self.most_common_hour
+    "#{hour}:00 is the time that encountered the most incidents."
+  end
+
   def self.get_sorted(key)
    self.group(key).count.sort_by{|k,v| v}.reverse
   end
@@ -44,4 +49,11 @@ class Incident < ActiveRecord::Base
       end
     end
   end
+
+
+  def self.parsed_mostleast_common_age_for_all_incidents(most_or_least)
+    most_or_least == "most" ? age = self.get_sorted("age")[1][0] : age = self.least_common("age")[0]
+    "#{age}yr olds were the age the with the #{most_or_least} incidents"
+  end
+
 end
