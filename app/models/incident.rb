@@ -40,7 +40,7 @@ class Incident < ActiveRecord::Base
       if arr[0].district != nil
         "District #{arr[0].district} has #{arr[1]} incidents"
       else
-        "#{arr[1]} incidents occured at an 'Unknown' district location"
+        "#{arr[1]} incidents occured at an 'Unknown' location"
       end
     end
   end

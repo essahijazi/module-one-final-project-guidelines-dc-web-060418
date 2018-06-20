@@ -67,6 +67,7 @@ require_relative '../config/environment.rb'
     user_input = gets.chomp.to_i
 
     while user_input != 7
+      ###--- CAN THIS BE PUT INTO OWN METHOD OF #get_user_query
       case user_input
       when 1
         puts Incident.average_age
@@ -86,7 +87,8 @@ require_relative '../config/environment.rb'
         puts "Sorry, that's not a valid number. Choose from our options between 1-7"
       end
       puts ""
-      puts Rainbow("*****************************").yellow
+      puts Rainbow("****************************************").blue
+      ###---#get_user_query method ends?
       #---REFACTOR THIS TO IT'S OWN METHOD: #continue_or_not
       puts Rainbow("Do you want to search again? (Y/N)").blue.bright
       continue = gets.chomp
@@ -105,9 +107,3 @@ require_relative '../config/environment.rb'
     puts Rainbow("Goodbye!").blue.bright
   end
 runner
-
-  # def check_user_input
-  #   while user_input.class != Integer
-  #     ""
-  #   end
-  # end
