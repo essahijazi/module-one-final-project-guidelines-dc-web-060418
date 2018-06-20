@@ -103,6 +103,7 @@ class Incident < ActiveRecord::Base
     most_or_least == "most" ? age_groups.first : age_groups.last
   end
 
+
   def self.display_mostleast_agegroup(most_or_least)
     agegroup_freq = self.get_mostleast_age_group(most_or_least)
 
@@ -110,6 +111,33 @@ class Incident < ActiveRecord::Base
     freq = agegroup_freq[1]
 
     "The #{agegroup}yr old age group was the #{most_or_least} common age group and they had #{freq} incidents"
-
   end
+
+  #returns an array of most or least common category and its frequency in a demographic option
+  # Incident.get_mostleast_demographic_option("most", "sex") => ["Male", 94]
+  # Incident.get_mostleast_demographic_option("most", "ethnicity") => ["Not Hispanic Or Latino", 91]
+  #Incident.get_mostleast_demographic_option("least", "race") => ["Asian", 2]
+  def self.get_mostleast_demographic_option(most_or_least, demographic_option)
+    #Incident.get_sorted("sex")
+    #[["Male", 94], ["Female", 33], ["Unknown", 1]]
+    # I dont want to display the 'Unknown' array
+    if most_or_least == "least" && demographic_option == "sex"
+      self.get_sorted(demographic_option)[1]
+    else
+      most_or_least == "most" ? self.most_common(demographic_option) : self.least_common(demographic_option)
+    end
+  end
+
+
+  def self.display_mostleast_demographic_option(most_or_least, demographic_option)
+    demographic_option_freq = self.get_mostleast_demographic_option(most_or_least, demographic_option)
+
+    option = demographic_option_freq[0]
+    freq = demographic_option_freq[1]
+
+    all_incident_count = Incident.all.length
+
+    "#{freq} out of #{all_incident_count} incidents were related with the #{option} group in the #{demographic_option} category"
+  end
+
 end

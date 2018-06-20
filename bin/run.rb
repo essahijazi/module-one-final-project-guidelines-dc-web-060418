@@ -24,11 +24,11 @@ require_relative '../config/environment.rb'
   end
 
   def display_selected_demographic_option(most_or_least)
-    second_user_input = gets.chomp
+    second_user_input = gets.chomp.downcase
     if Incident.column_names.include?(second_user_input)
 
-        if (second_user_input != "age")
-
+      if (second_user_input != "age")
+        puts Incident.display_mostleast_demographic_option(most_or_least, second_user_input)
       else
         puts Incident.display_mostleast_agegroup(most_or_least)
       end
