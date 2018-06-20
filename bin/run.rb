@@ -2,17 +2,17 @@ require_relative '../config/environment.rb'
 
 
   def welcome
-    puts "Welcome! Please select ONE of the following options by typing the corresponding number"
+    puts "Welcome! Please select ONE NUMBER from questions below"
   end
 
   def get_options
     puts "Queries:" #What would you like to know about stop and frisk incidents in Washington, DC?
 
     puts "1. Average age of 'Person'" #What was the average age of people stopped and frisked?
-    puts "2. Hour of day with most Stop & Frisks" #At what time did the most incidents occur?
-    puts "3. Most common... "
-    puts "4. Least common... "
-    puts "5. List reasons and frequencies for stop and frisks by gender"
+    puts "2. Hour of day with most Stop & Frisks" #What hour of the day had the most stops?
+    puts "3. Most common... " #What demographic groups were MOST likely to be stopped?
+    puts "4. Least common... " #What demographic groups were LEAST likely to be stopped?
+    puts "5. List reasons and frequencies for stop and frisks by gender" #What reasons were most common to stop and frisk incidents, by gender"
     puts "6. Exit"
   end
 
