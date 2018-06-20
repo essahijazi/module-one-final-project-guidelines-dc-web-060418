@@ -34,4 +34,14 @@ class Incident < ActiveRecord::Base
     arr.collect {|arr| "#{arr[0].description} with #{arr[1]} incidents"}
   end
 
+  def self.sort_reasons_by_location
+    location_arr = self.get_sorted("location")
+    location_arr.collect do |arr|
+      if arr[0].district != nil
+        "District #{arr[0].district} has #{arr[1]} incidents"
+      else
+        "#{arr[1]} incidents occured at an 'Unknown' district location"
+      end
+    end
+  end
 end

@@ -12,5 +12,9 @@ class Location < ActiveRecord::Base
     self.get_all_reasons.first
   end
 
+  def parsed_get_all_reasons
+    all_reasons = self.get_all_reasons
+    all_reasons.collect {|arr| "#{arr[0].description} with #{arr[1]} incidents"}
+  end
 
 end

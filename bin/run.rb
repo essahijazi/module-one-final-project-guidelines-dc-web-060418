@@ -8,12 +8,13 @@ require_relative '../config/environment.rb'
   def get_options
     puts "Queries:" #What would you like to know about stop and frisk incidents in Washington, DC?
 
-    puts "1. Average age of 'Person'" #What was the average age of people stopped and frisked?
-    puts "2. Hour of day with most Stop & Frisks" #What hour of the day had the most stops?
-    puts "3. Most common... " #What demographic groups were MOST likely to be stopped?
-    puts "4. Least common... " #What demographic groups were LEAST likely to be stopped?
-    puts "5. List reasons and frequencies for stop and frisks by gender" #What reasons were most common to stop and frisk incidents, by gender"
-    puts "6. Exit"
+    puts "1. What was the average age of people stopped and frisked?"
+    puts "2. What hour of the day had the most stops?"
+    puts "3. What demographic groups were MOST likely to be stopped?"
+    puts "4. What demographic groups were LEAST likely to be stopped?"
+    puts "5. What reasons were most common to stop and frisk incidents, by gender"
+    puts "6. Locations"
+    puts "7. Exit"
   end
 
 
@@ -41,13 +42,23 @@ require_relative '../config/environment.rb'
     end
   end
 
+
+  def get_reasons_for_location
+    puts "To view all the reasons for a specific district please type one of the following district names: 1D, 2D, 3D, 4D, 5D, 6D, 7D, Unknown"
+    user_input = gets.chomp
+    puts ""
+    puts "All of the incidents and frequencies for District #{user_input}"
+    selected_location = Location.find_by(district: user_input)
+    puts selected_location.parsed_get_all_reasons
+  end
+
   def runner
     welcome
     get_options
 
     user_input = gets.chomp.to_i
 
-    while user_input != 6
+    while user_input != 7
       case user_input
       when 1
         puts Incident.average_age
@@ -59,6 +70,10 @@ require_relative '../config/environment.rb'
         get_attributes("least")
       when 5
         get_gender
+      when 6
+        puts Incident.sort_reasons_by_location
+        puts ""
+        get_reasons_for_location
       else
         puts "Oh No!"
       end
