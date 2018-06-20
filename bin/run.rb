@@ -27,15 +27,10 @@ require_relative '../config/environment.rb'
     second_user_input = gets.chomp
     if Incident.column_names.include?(second_user_input)
       if (second_user_input != "age")
-        puts Incident.parsed_mostleast_common_age_for_all_incidents(most_or_least)
-      else
 
+      else
+        puts Incident.display_mostleast_agegroup(most_or_least)
       end
-      # if most_or_least == "most"
-      #   puts Incident.most_common(second_user_input)
-      # elsif most_or_least == "least"
-      #   puts Incident.least_common(second_user_input)
-      # end
     else
       puts Rainbow("Sorry, that's not a column in our table.").blue
     end
