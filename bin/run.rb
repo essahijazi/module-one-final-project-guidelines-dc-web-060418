@@ -6,20 +6,22 @@ require_relative '../config/environment.rb'
   end
 
   def get_options
-    puts "Queries:" #What would you like to know about stop and frisk incidents in Washington, DC?
-
-    puts "1. What was the average age of people stopped and frisked?"
-    puts "2. What hour of the day had the most stops?"
-    puts "3. What demographic groups were MOST likely to be stopped?"
-    puts "4. What demographic groups were LEAST likely to be stopped?"
-    puts "5. What reasons were most common to stop and frisk incidents, by gender"
-    puts "6. Locations"
-    puts "7. Exit"
+    puts Rainbow("What would you like to know about stop and frisk incidents in Washington, DC?").blue.bright
+    puts ""
+    puts Rainbow("1. What was the average age of people stopped and frisked?").blue
+    puts Rainbow("2. What hour of the day had the most stops?").blue
+    puts Rainbow("3. What demographic groups were MOST likely to be stopped?").blue
+    puts Rainbow("4. What demographic groups were LEAST likely to be stopped?").blue
+    puts Rainbow("5. What reasons were most common to stop and frisk incidents, by gender").blue
+    puts Rainbow("6. Locations").blue
+    puts Rainbow("7. Exit").red
+    puts ""
   end
 
 
   def get_attributes(value)
-    puts "Please specify, if you want to search #{value} common incidents by SEX, AGE, ETHNICITY or RACE"
+    puts ""
+    puts Rainbow("Please specify, if you want to search #{value} common incidents by SEX, AGE, ETHNICITY or RACE").blue
     second_user_input = gets.chomp
     if Incident.column_names.include?(second_user_input)
       if value == "most"
@@ -28,26 +30,27 @@ require_relative '../config/environment.rb'
         puts Incident.least_common(second_user_input)
       end
     else
-      puts "Sorry, that's not a column in our table."
+      puts Rainbow("Sorry, that's not a column in our table.").blue
     end
   end
 
   def get_gender
-    puts "Please specify, if you want to collect reasons for stops for MALE or FEMALE"
+    puts ""
+    puts Rainbow("Please specify, if you want to collect reasons for stops for MALE or FEMALE").blue
     second_user_input = gets.chomp.downcase.capitalize
     if second_user_input == "Male" || second_user_input == "Female"
       puts Incident.sort_reasons_by_gender(second_user_input)
     else
-      puts "Sorry, you have to choose 'male' or 'female'"
+      puts Rainbow("Sorry, you have to choose 'male' or 'female'").blue
     end
   end
 
 
   def get_reasons_for_location
-    puts "To view all the reasons for a specific district please type one of the following district names: 1D, 2D, 3D, 4D, 5D, 6D, 7D, Unknown"
+    puts Rainbow("To view all the reasons for a specific district please type one of the following district names: 1D, 2D, 3D, 4D, 5D, 6D, 7D, Unknown").blue
     user_input = gets.chomp
     puts ""
-    puts "All of the incidents and frequencies for District #{user_input}"
+    "All of the incidents and frequencies for District #{user_input}"
     selected_location = Location.find_by(district: user_input)
     puts selected_location.parsed_get_all_reasons
   end
@@ -75,15 +78,15 @@ require_relative '../config/environment.rb'
         puts ""
         get_reasons_for_location
       else
-        puts "Oh No!"
+        puts "Sorry, that's not a valid number. Choose from our options between 1-7"
       end
       puts ""
-      puts "*****************************"
-      puts "Do you want to search again?"
+      puts Rainbow("*****************************").yellow
+      puts Rainbow("Do you want to search again?").blue.bright
       get_options
       user_input = gets.chomp.to_i
     end
-    puts "Goodbye!"
+    puts Rainbow("Goodbye!").blue.bright.blink
   end
 runner
 
