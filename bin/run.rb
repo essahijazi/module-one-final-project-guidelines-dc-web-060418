@@ -26,11 +26,14 @@ require_relative '../config/environment.rb'
   def display_selected_demographic_option(most_or_least)
     second_user_input = gets.chomp
     if Incident.column_names.include?(second_user_input)
-      if (second_user_input != "age")
+
+        if (second_user_input != "age")
 
       else
         puts Incident.display_mostleast_agegroup(most_or_least)
       end
+
+
     else
       puts Rainbow("Sorry, that's not a column in our table.").blue
     end
