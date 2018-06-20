@@ -7,23 +7,14 @@ class Incident < ActiveRecord::Base
     "Average age for persons of stop and frisk incidents is: #{age}"
   end
 
-
   def self.get_incident_hour_freq
     all_hours = self.all.collect{|incident| incident.date.hour}
-    hour_frequencies = {}
-    all_hours.each do |hour|
-      if hour_frequencies.keys.include?(hour.to_s.to_sym)
-        hour_frequencies[hour.to_s.to_sym] += 1
-      else
-        hour_frequencies[hour.to_s.to_sym] = 1
-      end
-    end
-    hour_frequencies
+    all_hours.each_with_object(Hash.new(0)) {|hour, hash| hash[hour] += 1 }
   end
 
   def self.most_common_hour
     hour_frequencies = self.get_incident_hour_freq
-    hour_frequencies.key(hour_frequencies.values.max).to_s.to_i
+    hour_frequencies.key(hour_frequencies.values.max)
   end
 
   def self.get_sorted(key)
