@@ -47,12 +47,17 @@ require_relative '../config/environment.rb'
 
 
   def get_reasons_for_location
-    puts Rainbow("To view all the reasons for a specific district please type one of the following district names: 1D, 2D, 3D, 4D, 5D, 6D, 7D, Unknown").blue
-    user_input = gets.chomp
-    puts ""
-    "All of the incidents and frequencies for District #{user_input}"
-    selected_location = Location.find_by(district: user_input)
-    puts selected_location.parsed_get_all_reasons
+    puts Rainbow("To view all the reasons for a specific district please type one of the following district names: \n1D, 2D, 3D, 4D, 5D, 6D, 7D").blue
+    user_location = gets.chomp
+    user_location = user_location.upcase
+    if Location.all.collect{|location|location.district}.include?(user_location) && user_location.class == String
+      puts ""
+      puts Rainbow("All of the incidents and frequencies for District #{user_location}").blue
+      selected_location = Location.find_by(district: user_location)
+      puts selected_location.parsed_get_all_reasons
+    else
+      puts Rainbow("Did not recognize location.").blue
+    end
   end
 
   def runner
@@ -82,11 +87,22 @@ require_relative '../config/environment.rb'
       end
       puts ""
       puts Rainbow("*****************************").yellow
-      puts Rainbow("Do you want to search again?").blue.bright
-      get_options
-      user_input = gets.chomp.to_i
+      #---REFACTOR THIS TO IT'S OWN METHOD: #continue_or_not
+      puts Rainbow("Do you want to search again? (Y/N)").blue.bright
+      continue = gets.chomp
+      if continue[0].upcase == "Y"
+        get_options
+        user_input = gets.chomp.to_i
+      elsif continue[0].upcase == "N"
+        break
+      else
+        puts Rainbow("I didn't understand that, but here are our query options again").blue
+        get_options
+        user_input = gets.chomp.to_i
+      end
+      #----#continue_or_not method ends
     end
-    puts Rainbow("Goodbye!").blue.bright.blink
+    puts Rainbow("Goodbye!").blue.bright
   end
 runner
 
