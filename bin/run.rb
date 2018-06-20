@@ -65,52 +65,63 @@ require_relative '../config/environment.rb'
     end
   end
 
+  def get_and_answer_user_query(user_input)
+    case user_input
+    when 1
+      puts Incident.average_age
+    when 2
+      puts Incident.parsed_most_common_hour
+    when 3
+      display_demographic_options("most")
+      display_selected_demographic_option("most")
+    when 4
+      display_demographic_options("least")
+      display_selected_demographic_option("least")
+    when 5
+      get_gender
+    when 6
+      puts Incident.sort_reasons_by_location
+      puts ""
+      get_reasons_for_location
+    else
+      puts "Sorry, that's not a valid number. Choose from our options between 1-7"
+    end
+    puts ""
+    puts Rainbow("****************************************").blue
+  end
+
+  def continue?
+    puts Rainbow("Do you want to search again? (Y/N)").blue.bright
+    continue = gets.chomp
+    if continue[0].upcase == "Y"
+      return true
+    elsif continue[0].upcase == "N"
+      return false
+    else
+      puts Rainbow("I didn't understand that, but here are our query options again").blue
+      return true
+    end
+  end
+
   def runner
     welcome
     get_options
-
     user_input = gets.chomp.to_i
 
     while user_input != 7
-      ###--- CAN THIS BE PUT INTO OWN METHOD OF #get_user_query
-      case user_input
-      when 1
-        puts Incident.average_age
-      when 2
-        puts Incident.parsed_most_common_hour
-      when 3
-        display_demographic_options("most")
-        display_selected_demographic_option("most")
-      when 4
-        display_demographic_options("least")
-        display_selected_demographic_option("least")
-      when 5
-        get_gender
-      when 6
-        puts Incident.sort_reasons_by_location
-        puts ""
-        get_reasons_for_location
-      else
-        puts "Sorry, that's not a valid number. Choose from our options between 1-7"
-      end
-      puts ""
-      puts Rainbow("****************************************").blue
-      ###---#get_user_query method ends?
-      #---REFACTOR THIS TO IT'S OWN METHOD: #continue_or_not
-      puts Rainbow("Do you want to search again? (Y/N)").blue.bright
-      continue = gets.chomp
-      if continue[0].upcase == "Y"
+      #give them the answer they were looking for
+      get_and_answer_user_query(user_input)
+      #ask if they want to query again. Evaluates Y/N to true or false
+      if continue?
         get_options
         user_input = gets.chomp.to_i
-      elsif continue[0].upcase == "N"
+      else
+        #if they answer no, break from loop and exit CLI
         break
-      else
-        puts Rainbow("I didn't understand that, but here are our query options again").blue
-        get_options
-        user_input = gets.chomp.to_i
       end
-      #----#continue_or_not method ends
     end
+
     puts Rainbow("Goodbye!").blue.bright
   end
+
 runner
