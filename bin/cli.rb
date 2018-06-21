@@ -59,6 +59,8 @@ def get_reasons_for_location
     puts Rainbow("All of the incidents and frequencies for District #{user_location}").blue
     selected_location = Location.find_by(district: user_location)
     puts selected_location.parsed_get_all_reasons
+    #ASK IF THEY WANT INCIDENT INFORMATION FOR ANY LIST ITEM.
+    continue_with_location(selected_location)
   else
     puts Rainbow("Did not recognize location.").blue
   end
@@ -99,6 +101,23 @@ def continue?
   else
     puts Rainbow("I didn't understand that, but here are our query options again").blue
     return true
+  end
+end
+
+def continue_with_location(selected_location)
+  puts ""
+  puts Rainbow("Do you want to get all information of any of these incidents?").blue
+  puts Rainbow("Type in the NUMBER of the row of incidents you'd like to know more of.").blue
+  user_number = gets.chomp.to_i
+  if user_number > 0 && user_number < selected_location.get_all_reasons.length
+      #translate user's number to an index
+      user_index = user_number-1
+      #get the reason's ID 
+      reason_id = selected_location.get_all_reasons[user_index].first.id
+      #run the method to output all incidents with matching reason and location
+      puts selected_location.get_my_incidents(reason_id)
+  else
+      puts Rainbow("Sorry, did not recognize list item number.").blue
   end
 end
 

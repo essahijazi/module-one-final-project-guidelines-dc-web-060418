@@ -3,6 +3,7 @@ class Incident < ActiveRecord::Base
   belongs_to :location
 
   def self.average_age
+    binding.pry
     age = self.where("age > 0").average(:age).round
     "Average age for persons of stop and frisk incidents is: #{age}"
   end
@@ -138,6 +139,10 @@ class Incident < ActiveRecord::Base
     all_incident_count = Incident.all.length
 
     "#{freq} out of #{all_incident_count} incidents were related with the #{option} group in the #{demographic_option} category"
+  end
+
+  def parse
+    "#{self.date}: a #{self.age}-year-old #{self.race} #{self.sex} was stopped and frisked because of '#{self.reason.description}'"
   end
 
 end
