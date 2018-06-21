@@ -142,7 +142,11 @@ class Incident < ActiveRecord::Base
   end
 
   def parse
-    "#{self.date}: a #{self.age}-year-old #{self.race} #{self.sex} was stopped and frisked because of '#{self.reason.description}'"
+    age_string = ""
+    if self.age != 0
+      age_string = "#{self.age}-year-old"
+    end
+    "#{self.date}: #{age_string} #{self.race} #{self.sex} was stopped and frisked for the reason: '#{self.reason.description}'"
   end
 
 end
