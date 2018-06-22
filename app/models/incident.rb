@@ -145,7 +145,46 @@ class Incident < ActiveRecord::Base
     if self.age != 0
       age_string = "#{self.age}-year-old"
     end
-    "#{self.date}: #{age_string} #{self.race} #{self.sex} was stopped and frisked for the reason: '#{self.reason.description}'"
+    "In #{self.location.district} at #{self.date}: #{age_string} #{self.race} #{self.sex} was stopped and frisked for the reason: '#{self.reason.description}'"
+  end
+
+  #method conducts actual search on DB
+  def self.search_with_hash(hash)
+    results = Incident.where(hash) #returns an array of Incident objects
+    results.collect {|incident|incident.parse} #parse objects to a descriptive string, return this array
+  end
+
+  #method translates user's input to a hash we can search with
+  #example parameter: "race: asian, location: 7D"
+  def self.hashify_user_search(search_string)
+    #initialize a new empty return hash
+    search_hash = Hash.new(0)
+    #if your search string doesn't have colon, return empty hash
+    return search_hash if !search_string.include?(":")
+    
+    #remove all whitespace: search_string.gsub(/\s+/, "") produces "race:asian,location:7D"
+    search_string.gsub!(/\s+/, "")
+    #split by commas => ["race:asian", "location:7D"]
+    search_array = search_string.split(",")
+    search_array.each {|parameters| parameters.split(":")}
+    
+    #iterate over array of search terms and populate return hash
+    search_array.each do |param|
+      new_array = param.split(":")
+      #first part of this new array is they key of hash, second part is value. Capitalize for case sensitivity
+      search_hash[new_array[0]] = new_array[1].capitalize
+    end
+    search_hash
+  end
+
+  def self.search_hash_is_correct?(hash)
+    return false if hash.empty?
+    #check if all keys of hash correspond to column values
+    available_keys = ["location", "age", "sex", "ethnicity", "race"]
+    hash.keys.each do |key|
+      return false if !available_keys.include?(key)
+    end
+    return true
   end
 
 end

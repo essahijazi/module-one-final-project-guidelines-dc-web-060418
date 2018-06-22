@@ -13,7 +13,8 @@ def get_options
   puts Rainbow("4. What demographic groups were LEAST likely to be stopped?").blue
   puts Rainbow("5. What reasons were most common to stop and frisk incidents, by gender").blue
   puts Rainbow("6. Locations").blue
-  puts Rainbow("7. Exit").red
+  puts Rainbow("7. Do your own search").blue
+  puts Rainbow("8. Exit").red
   puts ""
 end
 
@@ -31,7 +32,6 @@ def display_selected_demographic_option(most_or_least)
     else
       puts Incident.display_mostleast_agegroup(most_or_least)
     end
-
 
   else
     puts Rainbow("Sorry, that's not a column in our table.").blue
@@ -84,6 +84,8 @@ def get_and_answer_user_query(user_input)
     puts Incident.sort_reasons_by_location
     puts ""
     get_reasons_for_location
+  when 7
+    user_search
   else
     puts "Sorry, that's not a valid number. Choose from our options between 1-7"
   end
@@ -121,12 +123,31 @@ def continue_with_location(selected_location)
   end
 end
 
+def user_search
+  puts Rainbow("Enter your own search terms. You may specify a 'location', 'age', 'sex', 'ethnicity', 'race'").blue
+  puts Rainbow("Example input: 'sex: male, race: white'").blue
+  user_search = gets.chomp
+  user_hash = Incident.hashify_user_search(user_search)
+  if Incident.search_hash_is_correct?(user_hash)
+    #do the search
+    results = Incident.search_with_hash(user_hash)
+    if results.empty?
+      puts Rainbow("No matches.").blue
+    else
+      puts results
+      #puts Incident.search_with_hash(user_hash)
+    end
+  else
+    puts Rainbow("Sorry, those search terms didn't match our column names. Please check your search terms correctedness.").blue
+  end
+end
+
 def runner
   welcome
   get_options
   user_input = gets.chomp.to_i
 
-  while user_input != 7
+  while user_input != 8
     #give them the answer they were looking for
     get_and_answer_user_query(user_input)
     #ask if they want to query again. Evaluates Y/N to true or false
