@@ -111,7 +111,7 @@ def continue_with_location(selected_location)
   puts Rainbow("Do you want to get all information of any of these incidents?").blue
   puts Rainbow("Type in the NUMBER of the row of incidents you'd like to know more of.").blue
   user_number = gets.chomp.to_i
-  if user_number > 0 && user_number < selected_location.get_all_reasons.length
+  if user_number > 0 && user_number <= selected_location.get_all_reasons.length
       #translate user's number to an index
       user_index = user_number-1
       #get the reason's ID 
