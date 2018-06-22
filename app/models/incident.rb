@@ -26,7 +26,7 @@ class Incident < ActiveRecord::Base
   def self.get_sorted(key)
    self.group(key).count.sort_by{|k,v| v}.reverse
   end
-
+  #these could maybe be just one method, which returns an array, which we call .first/.last on
   def self.most_common(attribute)
       self.get_sorted(attribute).first
   end
