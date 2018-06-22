@@ -75,7 +75,7 @@ def get_and_answer_user_query(user_input)
     display_selected_demographic_option("most")
   when 4
     display_demographic_options("least")
-    display_selected_demographic_option("least")
+      display_selected_demographic_option("least")
   when 5
     get_gender
   when 6
