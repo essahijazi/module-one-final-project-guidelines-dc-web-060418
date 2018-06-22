@@ -85,12 +85,54 @@ describe Incident do
         .to eq("The 46-55yr old age group was the least common age group and they had 14 incidents")
     end
 
-    #<------------------------OPTION 3&4 ERROR MESSAGE TESTS------------------------>
-
-    it "Display error message when the user doesn't select one of the listed demographic options" do
-
+    #<------------------------OPTION 5 TESTS------------------------>
+    it "Display all of the reasons and their frequencies that are related with 'males' in the 'sex' category" do
+      expect(Incident.sort_reasons_by_gender("Male")).to eq(
+        ["Moving Violation with 29 incidents",
+         "Suspicious Persons with 26 incidents",
+         "Call For Service with 15 incidents",
+         "Suspicious Activity with 11 incidents",
+         "Pre-existing Knowledge with 5 incidents",
+         "Special Investigation with 3 incidents",
+         "Juvenile Contact with 2 incidents",
+         "Suspicious Vehicles with 2 incidents",
+         "Equipment Violation with 1 incidents"])
 
     end
 
+    it "Display all of the reasons and their frequencies that are related with 'females' in the 'sex' category" do
+      expect(Incident.sort_reasons_by_gender("Female")).to eq(
+        ["Moving Violation with 18 incidents",
+         "Special Investigation with 5 incidents",
+         "Truancy/curfew with 4 incidents",
+         "Suspicious Persons with 2 incidents",
+         "Call For Service with 2 incidents",
+         "Suspicious Vehicles with 1 incidents",
+         "Special Detail Checkpoint with 1 incidents"])
+    end
 
+    #<------------------------OPTION 6 TESTS------------------------>
+
+    it "Displays all of the locations and the frequency of incidents at each location" do
+      expect(Incident.sort_reasons_by_location).to eq (
+        ["District 7D has 56 incidents",
+         "District 3D has 24 incidents",
+         "District 6D has 16 incidents",
+         "District 1D has 13 incidents",
+         "13 incidents occured at an 'Unknown' location",
+         "District 5D has 3 incidents",
+         "District 2D has 2 incidents",
+         "District 4D has 1 incidents"])
+    end
+
+    it "Displays all of the incidents for a spcific location e.g.(District: '1D')" do
+      location1 = Location.find_by(district: "1D")
+      expect(location1.parsed_get_all_reasons).to eq(
+        ["1. Suspicious Persons with 5 incidents",
+         "2. Moving Violation with 4 incidents",
+         "3. Call For Service with 2 incidents",
+         "4. Equipment Violation with 1 incidents",
+         "5. Pre-existing Knowledge with 1 incidents"]
+      )
+    end
 end

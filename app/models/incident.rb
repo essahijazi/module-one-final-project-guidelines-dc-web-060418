@@ -3,7 +3,7 @@ class Incident < ActiveRecord::Base
   belongs_to :location
 
   def self.average_age
-    binding.pry
+    # binding.pry
     age = self.where("age > 0").average(:age).round
     "Average age for persons of stop and frisk incidents is: #{age}"
   end
