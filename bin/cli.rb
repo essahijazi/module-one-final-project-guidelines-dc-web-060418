@@ -12,7 +12,7 @@ def get_options
   puts Rainbow("3. What demographic groups were MOST likely to be stopped?").blue
   puts Rainbow("4. What demographic groups were LEAST likely to be stopped?").blue
   puts Rainbow("5. What reasons were most common to stop and frisk incidents, by gender").blue
-  puts Rainbow("6. Locations").blue
+  puts Rainbow("6. Search by locations").blue
   puts Rainbow("7. Do your own search").blue
   puts Rainbow("8. Exit").red
   puts ""
